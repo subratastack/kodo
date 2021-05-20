@@ -1,0 +1,10 @@
+@import "../../../assets/styles/bem.mixins";
+@import "../../../assets//styles/neumorphic";
+
+.post {
+  display: flex;
+  flex-direction: column;
+  // @include neumorphic-shadow();
+  // @include neumorphic-bg();
+  border-radius: 10px;
+}

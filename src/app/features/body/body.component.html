@@ -1,0 +1,7 @@
+<div class="container">
+  <div class="container__grid-row">
+    <div *ngFor="let post of listOfPost" class="container__grid-row__grid-item">
+      <app-post [post]="post"></app-post>
+    </div>
+  </div>
+</div>

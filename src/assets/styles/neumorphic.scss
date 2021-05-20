@@ -1,0 +1,12 @@
+@mixin neumorphic-shadow {
+  box-shadow:  14px 14px 25px #cecece,
+             -14px -14px 25px #f2f2f2;
+}
+
+@mixin neumorphic-border-radius {
+  border-radius: 50px;
+}
+
+@mixin neumorphic-bg {
+  background: linear-gradient(145deg, #f0f0f0, #cacaca);
+}

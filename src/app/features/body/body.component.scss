@@ -1,0 +1,39 @@
+@import "../../../assets/styles/bem.mixins";
+@import "../../../assets//styles/neumorphic";
+
+.container {
+  max-width: 1020px;
+  margin: 0 auto;
+
+  @include element(grid-row) {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    @include element(grid-item) {
+      height: auto;
+      flex-basis: 30%;
+      width: 300px;
+      position: relative;
+      margin: 10px;
+      box-sizing: border-box;
+
+      @media(max-width: 1333px) {
+        flex-basis: 30%;
+      }
+      
+      @media(max-width: 1073px) {
+        flex-basis: 30%;
+      }
+      
+      @media(max-width: 815px) {
+        flex-basis: 44%;
+      }
+      
+      @media(max-width: 555px) {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
+

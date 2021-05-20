@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+html, body {
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;
+}
+
+button:disabled,
+button[disabled] {
+  cursor:not-allowed
+}

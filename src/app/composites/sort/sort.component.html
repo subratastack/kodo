@@ -1,0 +1,7 @@
+<div class="select-dropdown">
+  <form [formGroup]="sortForm">
+    <select (change)="onChangeSortBy($event)" formControlName="sortBy">
+      <option *ngFor="let key of sortingKeys" value="{{key?.key}}">{{key?.text}}</option>
+    </select>
+  </form>
+</div>
