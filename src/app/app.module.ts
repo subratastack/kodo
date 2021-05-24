@@ -18,6 +18,9 @@ import { PostComponent } from './composites/post/post.component';
 import { PostHeaderComponent } from './composites/post-header/post-header.component';
 import { PostBodyComponent } from './composites/post-body/post-body.component';
 import { SortComponent } from './composites/sort/sort.component';
+import { ContainerComponent } from './features/container/container.component';
+import { RouterModule } from '@angular/router';
+import { routes } from './app.routing';
 
 export function initialApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -34,13 +37,15 @@ export function initialApp(appInitService: AppInitService) {
     PostComponent,
     PostHeaderComponent,
     PostBodyComponent,
-    SortComponent
+    SortComponent,
+    ContainerComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [
     {

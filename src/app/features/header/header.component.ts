@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SEARCH_SERVICE_DI_TOKEN } from 'src/app/di-token/search.service.token';
 import { SORTING_SERVICE_DI_TOKEN } from 'src/app/di-token/sorting.service.token';
 import { AppStoreToken } from 'src/app/di-token/store.token';
@@ -16,9 +17,8 @@ import { AppStore } from 'src/app/store/store';
 export class HeaderComponent implements OnInit {
 
   constructor(
-    @Inject(AppStoreToken) private appStore: AppStore<IAppStore>,
-    @Inject(SEARCH_SERVICE_DI_TOKEN) private searchService: SearchService<IData>,
-    @Inject(SORTING_SERVICE_DI_TOKEN) private sortingService: SortingService<IData>,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -26,16 +26,12 @@ export class HeaderComponent implements OnInit {
 
   public eventOnSearchChange(event: string): void {
     try {
-      this.appStore.setState((prevState: IAppStore) => {
-        return {
-          ...prevState,
-          data: this.searchService
-            .collection(this.appStore.getStateSnapshot().originalData)
-            .searchProperties(['name', 'description'])
-            .searchTerm(event)
-            .search()
-        }
-      })
+      const QUERY_PARAMS: Params = { searchTerm: event };
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: QUERY_PARAMS,
+        queryParamsHandling: 'merge',
+      });
     } catch (error) {
       throw new Error(error);
     }
@@ -43,15 +39,12 @@ export class HeaderComponent implements OnInit {
 
   public eventOnSortChange(event: ISortBy): void {
     try {
-      this.appStore.setState((prevState: IAppStore) => {
-        return {
-          ...prevState,
-          data: this.sortingService
-            .collection(this.appStore.getStateSnapshot().originalData)
-            .sortBy([event])
-            .sort()
-        }
-      })
+      const QUERY_PARAMS: Params = { sort: JSON.stringify(event) };
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: QUERY_PARAMS,
+        queryParamsHandling: 'merge',
+      });
     } catch (error) {
       throw new Error(error);
     }
