@@ -21,6 +21,8 @@ import { SortComponent } from './composites/sort/sort.component';
 import { ContainerComponent } from './features/container/container.component';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routing';
+import { PAGING_OFFSET_DEFAULT_VALUE, PAGING_SERVICE_DI_TOKEN } from './di-token/paging.service.token';
+import { PagingService } from './services/paging.service';
 
 export function initialApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -81,6 +83,14 @@ export function initialApp(appInitService: AppInitService) {
       useFactory: initialApp,
       deps: [AppInitService],
       multi: true
+    },
+    {
+      provide: PAGING_OFFSET_DEFAULT_VALUE,
+      useValue: 10
+    },
+    {
+      provide: PAGING_SERVICE_DI_TOKEN,
+      useClass: PagingService
     }
   ],
   bootstrap: [AppComponent]
