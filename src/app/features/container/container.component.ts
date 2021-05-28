@@ -44,31 +44,14 @@ export class ContainerComponent implements OnInit {
 
     let data: Array<IData> | undefined = this.appStore.getStateSnapshot().originalData;
     const PAGING: number | string = routeParams?.page ? routeParams.page : 1;
+    const SEARCH_TERM: string = routeParams?.searchTerm ? routeParams.searchTerm : null;
+    const SORT_OBJECT: ISortBy = routeParams?.sort ? JSON.parse(routeParams.sort) : null;
 
-    if (routeParams?.searchTerm || routeParams?.sort) {
-      const SEARCH_TERM: string = routeParams?.searchTerm ? routeParams.searchTerm : null;
-      const SORT_OBJECT: ISortBy = routeParams?.sort ? JSON.parse(routeParams.sort) : null;
+    data = SEARCH_TERM ? this.delegateToSearchService(data, SEARCH_TERM) : data;
 
-      if (SEARCH_TERM) {
-        data = this.searchService
-          .collection(this.appStore.getStateSnapshot().originalData)
-          .searchProperties(['name', 'description'])
-          .searchTerm(SEARCH_TERM)
-          .search();
-      }
+    data = SORT_OBJECT ? this.delegateToSortingService(data, SORT_OBJECT) : data;
 
-      if (SORT_OBJECT) {
-        data = this.sortingService
-          .collection(data)
-          .sortBy([SORT_OBJECT])
-          .sort()
-      }
-    }
-
-    const PAGINATED_DATA: IPaging = this.pagingService
-      .collection(data)
-      .pageNo(Number(PAGING))
-      .paging();
+    const PAGINATED_DATA: IPaging = this.delegateToPagingService(data, Number(PAGING));
 
     this.paginationMeta = { ...PAGINATED_DATA?.meta };
 
@@ -83,6 +66,36 @@ export class ContainerComponent implements OnInit {
         }
       }
     })
+  }
+
+  private delegateToSortingService(data: Array<IData> | undefined, sortObject: ISortBy): Array<IData> {
+    try {
+      return this.sortingService
+      .collection(data)
+      .sortBy([sortObject])
+      .sort()
+    } catch (error) {
+      return error;
+    }
+  }
+  
+  private delegateToSearchService(data: Array<IData> | undefined, searchTerm: string): Array<IData> {
+    try {
+      return this.searchService
+      .collection(this.appStore.getStateSnapshot().originalData)
+      .searchProperties(['name', 'description'])
+      .searchTerm(searchTerm)
+      .search();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  private delegateToPagingService(data: Array<IData> | undefined, pageNo: number): IPaging {
+    this.pagingService
+    .collection(data)
+    .pageNo(pageNo)
+    .paging();
   }
 
   public onPrevClick(): void {
