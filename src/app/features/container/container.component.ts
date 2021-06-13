@@ -92,10 +92,14 @@ export class ContainerComponent implements OnInit {
   }
 
   private delegateToPagingService(data: Array<IData> | undefined, pageNo: number): IPaging {
-    this.pagingService
-    .collection(data)
-    .pageNo(pageNo)
-    .paging();
+    try {
+      return this.pagingService
+      .collection(data)
+      .pageNo(pageNo)
+      .paging();
+    } catch (error) {
+      return error;
+    }
   }
 
   public onPrevClick(): void {
